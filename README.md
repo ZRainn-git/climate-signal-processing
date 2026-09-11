@@ -2,8 +2,8 @@
 
 Signal-processing analysis of environmental time-series data using digital filter design, Fourier methods, and Butterworth filtering.
 
-**[View the analysis notebook](notebook/Zhao_Rain_Yanzhi_Lab4_Code.ipynb)**  
-**[Read the full project report](report/YOUR_REPORT_FILENAME.pdf)**
+**[View the analysis notebook](notebook/environmental-time-series-filtering.ipynb)**  
+**[Read the full project report](report/environmental-time-series-filtering.pdf)**
 
 This project explores how frequency-domain and digital filtering techniques can be used to isolate periodic and long-term behaviour in real environmental datasets. The analysis focuses on globally averaged atmospheric methane concentrations and historical tide-gauge measurements from Churchill, Canada.
 
