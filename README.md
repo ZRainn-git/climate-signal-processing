@@ -8,9 +8,7 @@ This project explores how frequency-domain and digital filtering techniques can 
 
 Environmental time series often contain multiple overlapping components, including long-term trends, seasonal oscillations, measurement gaps, and higher-frequency variability.
 
-This project applies several signal-processing approaches to separate these components and examine their behaviour.
-
-The analysis consists of three main stages:
+This project applies several signal-processing approaches to separate these components and examine their behaviour:
 
 1. **Digital notch-filter design and characterization**
 2. **Removal of annual oscillations from atmospheric methane data**
@@ -25,18 +23,20 @@ The analysis was performed in Python using NumPy, SciPy, and Matplotlib.
 Methods include:
 
 - Fast Fourier Transform (FFT)
-- inverse FFT reconstruction
-- rational digital filter design
-- pole-zero based notch filtering
-- impulse-response analysis
-- frequency-response analysis
-- polynomial detrending
+- Inverse FFT reconstruction
+- Rational digital filter design
+- Pole-zero based notch filtering
+- Impulse-response analysis
+- Frequency-response analysis
+- Polynomial detrending
 - Butterworth low-pass filtering
-- zero-phase filtering
-- missing-data handling
-- linear trend estimation
+- Zero-phase filtering
+- Missing-data handling
+- Linear trend estimation
 
 Reusable digital-filter functions are provided separately in [`src/filters.py`](src/filters.py).
+
+---
 
 ## Digital Notch-Filter Design
 
@@ -44,9 +44,13 @@ A rational digital filter was constructed to target a specified oscillation freq
 
 The filter coefficients were derived from the locations of conjugate poles and zeros, with the parameter `epsilon` controlling their separation and therefore the width of the notch.
 
-The filter was characterized using both its impulse response and Fourier-domain frequency response before being applied to environmental data.
+The filter was characterized using its impulse response and Fourier-domain frequency response before being applied to environmental data.
+
+![Notch filter power spectrum](figures/notch_filter_power_spectrum.png)
 
 This provides a direct connection between the mathematical filter design and its effect on real time-series signals.
+
+---
 
 ## Atmospheric Methane Analysis
 
@@ -55,6 +59,8 @@ This provides a direct connection between the mathematical filter design and its
 The globally averaged methane record contains both a long-term trend and shorter-timescale oscillations.
 
 Before filtering, the long-term component was removed to better isolate the periodic behaviour. This reduces interference between the low-frequency trend and the targeted seasonal signal.
+
+![Detrended atmospheric methane time series](figures/methane_detrended.png)
 
 ### Fourier Filtering
 
@@ -66,7 +72,7 @@ A rational notch filter was independently applied to target the annual oscillati
 
 The filtered residual was then combined with the previously removed long-term trend to reconstruct the methane time series.
 
-### Comparing the Methods
+### Comparing Fourier and Notch Filtering
 
 The Fourier and notch-filter approaches provide two different strategies for removing periodic components.
 
@@ -74,19 +80,25 @@ Fourier filtering allows frequency components to be manipulated explicitly and p
 
 The notch filter provides targeted frequency removal directly through a designed digital filter, but its performance depends more strongly on filter parameters and stability.
 
+![Comparison of FFT and notch filtering](figures/methane_fft_vs_notch.png)
+
 The analysis also demonstrates the importance of **detrending before filtering**. Applying both approaches directly to the original signal produced substantially larger distortions near the boundaries of the time series.
+
+---
 
 ## Churchill Tide-Gauge Analysis
 
 Historical tide-gauge measurements from Churchill, Canada were used to investigate longer-timescale sea-level variability.
 
-The raw record contains missing observations, represented in the original dataset by sentinel values. These missing measurements were identified before filtering.
+The raw record contains missing observations represented by sentinel values. These measurements were identified and handled before filtering.
 
 ### Butterworth Low-Pass Filter
 
 A **fourth-order Butterworth low-pass filter** was designed with a cutoff corresponding to approximately **0.1 cycles/year**.
 
 The Butterworth design provides a maximally flat passband while suppressing higher-frequency variability, allowing variations with periods longer than approximately ten years to be emphasized.
+
+![Butterworth low-pass filter frequency response](figures/butterworth_frequency_response.png)
 
 The filtered signal was then compared with the original tide-gauge record.
 
@@ -100,52 +112,22 @@ The analysis produced an approximate trend of:
 
 within the analyzed Churchill record.
 
-This estimate represents the linear trend obtained from this particular filtering and fitting procedure rather than a general estimate of global sea-level change.
+This value represents the linear trend obtained from this particular filtering and fitting procedure rather than a general estimate of global sea-level change.
 
-## Selected Results
-
-### Methane Time Series
-
-The methane analysis illustrates the separation of long-term and seasonal behaviour and the reconstruction of the signal after frequency-selective filtering.
-
-<!-- Add methane figure here -->
-<!-- ![Methane filtering](figures/methane_filtering.png) -->
-
-### Fourier vs. Notch Filtering
-
-Comparing the two approaches illustrates how different filtering strategies can produce similar large-scale behaviour while differing in their treatment of boundaries and local signal structure.
-
-<!-- Add comparison figure here -->
-<!-- ![FFT and notch filtering comparison](figures/filter_comparison.png) -->
-
-### Butterworth Frequency Response
-
-The low-pass filter was designed to preserve long-timescale variability while suppressing higher-frequency components of the tide-gauge record.
-
-<!-- Add Butterworth response here -->
-<!-- ![Butterworth frequency response](figures/butterworth_response.png) -->
-
-### Churchill Sea-Level Trend
-
-Low-pass filtering reveals the longer-timescale structure of the Churchill record before linear trend estimation.
-
-<!-- Add sea-level figure here -->
-<!-- ![Churchill sea-level trend](figures/churchill_sea_level_trend.png) -->
+![Churchill low-pass filtered sea-level record and linear trend](figures/churchill_sea_level_trend.png)
 
 
 ## Data
 
-Two environmental time-series datasets are included:
-
 ### Atmospheric Methane
 
-Globally averaged atmospheric methane measurements used to investigate long-term and seasonal variability.
+Globally averaged atmospheric methane measurements are used to investigate long-term and seasonal variability.
 
 ### Churchill Tide Gauge
 
-Historical monthly tide-gauge measurements from Churchill, Canada.
+Historical monthly tide-gauge measurements from Churchill, Canada are used for the long-timescale filtering analysis.
 
-The tide-gauge record includes missing observations, requiring explicit handling before signal-processing operations.
+The original record contains missing observations, providing an additional real-world data-processing challenge.
 
 ## Tools and Libraries
 
@@ -157,7 +139,7 @@ The tide-gauge record includes missing observations, requiring explicit handling
 
 ## Reproducibility
 
-The original datasets required by the analysis are included in the [`data/`](data/) directory.
+The datasets required by the analysis are included in the [`data/`](data/) directory.
 
 Reusable filter-design functions are available in [`src/filters.py`](src/filters.py), while the complete analysis and visualizations are provided in the [`notebook/`](notebook/) directory.
 
@@ -165,14 +147,14 @@ Reusable filter-design functions are available in [`src/filters.py`](src/filters
 
 This project demonstrates:
 
-- implementation of digital filters from mathematical coefficients
-- frequency-domain analysis with FFT
-- comparison of Fourier and time-domain filtering
-- detrending and signal reconstruction
-- handling of missing real-world observations
-- Butterworth filter design
-- extraction of long-timescale environmental signals
-- quantitative trend estimation from filtered time-series data
+- Implementation of digital filters from mathematical coefficients
+- Frequency-domain analysis using FFT
+- Comparison of Fourier and time-domain filtering
+- Detrending and signal reconstruction
+- Handling of missing real-world observations
+- Butterworth low-pass filter design
+- Extraction of long-timescale environmental signals
+- Quantitative trend estimation from filtered time-series data
 
 ## Author
 
