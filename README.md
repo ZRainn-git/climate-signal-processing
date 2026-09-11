@@ -132,23 +132,6 @@ Low-pass filtering reveals the longer-timescale structure of the Churchill recor
 <!-- Add sea-level figure here -->
 <!-- ![Churchill sea-level trend](figures/churchill_sea_level_trend.png) -->
 
-## Repository Structure
-
-```text
-climate-signal-processing/
-│
-├── README.md
-│
-├── data/
-│   ├── methane_global.csv
-│   └── Churchill_58_46_01.2__94_10_58.8.txt
-│
-├── notebook/
-│   └── Zhao_Rain_Yanzhi_Lab4_Code.ipynb
-│
-└── src/
-    └── filters.py
-```
 
 ## Data
 
